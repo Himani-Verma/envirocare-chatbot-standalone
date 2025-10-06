@@ -18,13 +18,42 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { 
-            font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f6f7fb;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap');
+        
+        /* Envirocare Chat Theme Variables */
+        .envirocare-chat {
+            --ec-blue: #2d4891;
+            --ec-blue-700: #233a7a;
+            --ec-green: #64aa53;
+            --ec-bg: #f6f7fb;
+            --ec-ink: #17223b;
+            --ec-muted: #6b7385;
+            --radius: 14px;
+            --shadow: 0 8px 28px rgba(18, 28, 45, 0.12);
+            --shadow-soft: 0 4px 14px rgba(18, 28, 45, 0.08);
+            --blur: saturate(180%) blur(10px);
+            
+            font-family: 'Inter', 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--ec-bg);
+            color: var(--ec-ink);
         }
         
-        /* Enhanced animations */
+        /* Background Pattern */
+        .envirocare-chat::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: url('./images/bg-wave.svg') no-repeat center top;
+            background-size: cover;
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Animations */
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -45,123 +74,232 @@
             50% { transform: scale(1.05); }
         }
         
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        
         .slide-in { animation: slideIn 0.3s ease-out; }
         .slide-out { animation: slideOut 0.3s ease-in; }
         .fade-in { animation: fadeIn 0.3s ease-out; }
         .pulse-animation { animation: pulse 2s infinite; }
         
         /* Enhanced scrollbar */
-        .custom-scrollbar::-webkit-scrollbar {
+        .envirocare-chat .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
         }
         
-        .custom-scrollbar::-webkit-scrollbar-track {
+        .envirocare-chat .custom-scrollbar::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 3px;
         }
         
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #2d4891;
+        .envirocare-chat .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--ec-blue);
             border-radius: 3px;
         }
         
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #1e3a8a;
+        .envirocare-chat .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: var(--ec-blue-700);
+        }
+        
+        /* Header Styling */
+        .envirocare-chat .chat-header {
+            height: 64px;
+            background: linear-gradient(135deg, var(--ec-blue), var(--ec-blue-700));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow-soft);
+        }
+        
+        .envirocare-chat .chat-header .logo {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .envirocare-chat .chat-header .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
         }
         
         /* Chat message bubbles */
-        .message-bubble {
+        .envirocare-chat .message-bubble {
             max-width: 85%;
             padding: 12px 16px;
             border-radius: 18px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            box-shadow: var(--shadow-soft);
             margin-bottom: 8px;
             word-wrap: break-word;
+            position: relative;
         }
         
-        .message-bubble.user {
-            background: #f1f1f1;
+        .envirocare-chat .message-bubble.user {
+            background: #f1f3f7;
             margin-left: auto;
+            color: var(--ec-ink);
         }
         
-        .message-bubble.bot {
+        .envirocare-chat .message-bubble.bot {
             background: #e9efff;
             margin-right: auto;
+            color: #102a56;
+        }
+        
+        .envirocare-chat .message-bubble.bot .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 2px solid var(--ec-blue);
         }
         
         /* FAQ card hover effects */
-        .faq-card {
+        .envirocare-chat .faq-card {
             transition: all 0.2s ease-in-out;
             cursor: pointer;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-soft);
         }
         
-        .faq-card:hover {
+        .envirocare-chat .faq-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
         }
         
         /* Button enhancements */
-        .btn-primary {
-            background: #2d4891;
+        .envirocare-chat .btn-primary {
+            background: var(--ec-blue);
             color: white;
-            border-radius: 12px;
+            border-radius: var(--radius);
             transition: all 0.2s ease-in-out;
             border: none;
             font-weight: 500;
+            height: 52px;
         }
         
-        .btn-primary:hover {
-            background: #1e3a8a;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(45, 72, 145, 0.3);
+        .envirocare-chat .btn-primary:hover {
+            background: var(--ec-blue-700);
+            transform: translateY(-1px) scale(1.01);
+            box-shadow: var(--shadow);
         }
         
-        .btn-secondary {
+        .envirocare-chat .btn-secondary {
             background: transparent;
-            color: #2d4891;
-            border: 2px solid #2d4891;
-            border-radius: 12px;
+            color: var(--ec-blue);
+            border: 2px solid var(--ec-blue);
+            border-radius: var(--radius);
             transition: all 0.2s ease-in-out;
         }
         
-        .btn-secondary:hover {
+        .envirocare-chat .btn-secondary:hover {
             background: #e8ecf7;
             transform: translateY(-1px);
         }
         
+        /* Trust chips */
+        .envirocare-chat .trust-chip {
+            background: rgba(100, 170, 83, 0.1);
+            color: var(--ec-green);
+            border: 1px solid rgba(100, 170, 83, 0.2);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* Typing indicator */
+        .envirocare-chat .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .envirocare-chat .typing-indicator .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--ec-muted);
+            animation: typing 1.4s infinite;
+        }
+        
+        .envirocare-chat .typing-indicator .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .envirocare-chat .typing-indicator .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
         /* Focus styles for accessibility */
-        .focus-visible:focus {
-            outline: 2px solid #2d4891;
+        .envirocare-chat .focus-visible:focus {
+            outline: 2px solid #90a7ff;
             outline-offset: 2px;
         }
         
         /* Typography */
-        .heading {
-            font-size: 18px;
+        .envirocare-chat .heading {
+            font-size: 22px;
             font-weight: 700;
-            line-height: 1.4;
-            letter-spacing: 0.2px;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
         }
         
-        .subheading {
+        .envirocare-chat .subheading {
             font-size: 14px;
             font-weight: 600;
             line-height: 1.4;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.01em;
         }
         
-        .body-text {
-            font-size: 13px;
+        .envirocare-chat .body-text {
+            font-size: 14px;
             font-weight: 400;
             line-height: 1.5;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.01em;
         }
         
-        .small-text {
+        .envirocare-chat .small-text {
             font-size: 11px;
             font-weight: 400;
             line-height: 1.4;
-            letter-spacing: 0.2px;
+            letter-spacing: 0.01em;
+            color: var(--ec-muted);
+        }
+        
+        /* Empty states */
+        .envirocare-chat .empty-state {
+            text-align: center;
+            padding: 32px 16px;
+            color: var(--ec-muted);
+        }
+        
+        .envirocare-chat .empty-state .emoji {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 430px) {
+            .envirocare-chat {
+                --radius: 12px;
+            }
+            
+            .envirocare-chat .chat-header {
+                height: 60px;
+            }
+            
+            .envirocare-chat .heading {
+                font-size: 20px;
+            }
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .envirocare-chat * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
@@ -182,21 +320,22 @@
     </div>
 
     <!-- Chatbot Container -->
-    <div id="chatbot-container" class="fixed top-4 right-4 w-96 h-[90vh] max-h-[600px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden flex flex-col backdrop-blur-sm bg-white/95 hidden">
+    <div id="chatbot-container" class="envirocare-chat fixed top-4 right-4 w-96 h-[90vh] max-h-[600px] bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden flex flex-col backdrop-blur-sm bg-white/95 hidden">
         <!-- Header -->
-        <div class="text-white p-5 bg-gradient-to-r from-primary to-primary-dark rounded-t-3xl">
-            <div class="flex items-center justify-between">
-                <button class="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded-lg hover:bg-white/10">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <div class="chat-header flex items-center justify-between px-6">
+            <div class="flex items-center space-x-3">
+                <img src="./images/envirocare-logo.svg" alt="Envirocare Labs" class="logo">
+                <span class="title">Envirocare Labs</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button class="text-white/80 hover:text-white transition-colors duration-200 p-2 rounded-lg hover:bg-white/10 focus-visible">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
-                <div class="flex items-center justify-center flex-1">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTYwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSI4MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5FbnZpcm9jYXJlIExhYnM8L3RleHQ+Cjwvc3ZnPgo=" alt="Envirocare Labs" class="drop-shadow-sm" />
-                </div>
-                <button onclick="toggleChatbot()" class="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded-lg hover:bg-white/10">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                <button onclick="hideChatbot()" class="text-white/80 hover:text-white transition-colors duration-200 p-2 rounded-lg hover:bg-white/10 focus-visible">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -205,16 +344,27 @@
         <!-- Content Area -->
         <div id="content-area" class="flex-1 p-4 bg-gradient-to-b from-gray-50 to-white overflow-y-auto custom-scrollbar" style="scroll-behavior: smooth;">
             <!-- Home Screen -->
-            <div id="home-screen" class="text-center space-y-6 py-8">
-                <div class="space-y-3">
-                    <h2 class="heading text-gray-800">
-                        Hey! How can we help you today?
-                    </h2>
-                    <p class="body-text text-gray-600">I'm Eva, your AI assistant. Let's get started!</p>
+            <div id="home-screen" class="text-center space-y-8 py-8">
+                <!-- Hero Section with Avatar -->
+                <div class="space-y-4">
+                    <div class="flex justify-center">
+                        <div class="relative">
+                            <img src="./images/eva-avatar.png" alt="Eva Assistant" class="w-14 h-14 rounded-full border-4 border-white shadow-lg">
+                            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <h2 class="heading text-gray-800">
+                            Hey! How can we help you today?
+                        </h2>
+                        <p class="body-text text-gray-600">I'm Eva, your AI assistant. Let's get started!</p>
+                    </div>
                 </div>
+                
+                <!-- CTA Buttons -->
                 <div class="space-y-3">
-                    <button onclick="startChat()" class="btn-primary w-full py-3 px-4 flex items-center justify-center space-x-2 focus-visible">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <button onclick="startChat()" class="btn-primary w-full py-4 px-6 flex items-center justify-center space-x-2 focus-visible">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                         </svg>
                         <span class="subheading">Chat with Eva now</span>
@@ -222,6 +372,13 @@
                     <button onclick="showFAQ()" class="btn-secondary w-full py-3 px-4 focus-visible">
                         <span class="subheading">Browse FAQ</span>
                     </button>
+                </div>
+                
+                <!-- Trust Chips -->
+                <div class="flex flex-wrap justify-center gap-2">
+                    <span class="trust-chip">NABL accredited</span>
+                    <span class="trust-chip">ISO 9001</span>
+                    <span class="trust-chip">Pan-India service</span>
                 </div>
             </div>
 
@@ -284,7 +441,18 @@
                         Start New Chat
                     </button>
                 </div>
-                <div id="messages-container" class="space-y-3 min-h-[300px]"></div>
+                <div id="messages-container" class="space-y-3 min-h-[300px] overflow-y-auto custom-scrollbar"></div>
+                
+                <!-- Typing Indicator -->
+                <div id="typing-indicator" class="flex justify-start hidden">
+                    <div class="message-bubble bot">
+                        <div class="typing-indicator">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                </div>
                 <div id="loading-indicator" class="flex justify-start hidden">
                     <div class="bg-white text-gray-800 px-4 py-3 rounded-2xl shadow-md border border-gray-100">
                         <div class="flex space-x-1">
@@ -320,18 +488,37 @@
                         class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 body-text focus-visible" />
                 </div>
 
-                <div id="faq-results" class="space-y-3"></div>
+                <div id="faq-results" class="space-y-3">
+                    <!-- Empty state will be shown when no results -->
+                    <div id="faq-empty-state" class="empty-state">
+                        <div class="emoji">🔍</div>
+                        <p class="body-text">No questions yet—try typing "pricing" or "NABL"</p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Chat Input -->
         <div id="chat-input" class="p-4 border-t border-gray-100 bg-white/90 backdrop-blur-sm hidden">
-            <div class="flex space-x-3">
+            <div class="flex items-center space-x-3">
+                <!-- Emoji/Mic placeholder slots -->
+                <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors focus-visible">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
                 <input type="text" id="message-input" placeholder="Type your message here..." 
-                    class="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90 backdrop-blur-sm text-black body-text focus-visible" />
+                    class="flex-1 px-4 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90 backdrop-blur-sm text-black body-text focus-visible" />
+                <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors focus-visible">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                </button>
                 <button onclick="sendMessage()" id="send-btn" 
                     class="btn-primary px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed focus-visible">
-                    <span class="subheading">Send</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
                 </button>
             </div>
         </div>
@@ -675,16 +862,22 @@
             const container = document.getElementById('messages-container');
             container.innerHTML = '';
             
-            messages.forEach(msg => {
+            messages.forEach((msg, index) => {
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `flex ${msg.is_visitor ? 'justify-end' : 'justify-start'}`;
                 
+                // Show avatar only on first bot message of a block
+                const showAvatar = !msg.is_visitor && (index === 0 || messages[index - 1].is_visitor);
+                
                 messageDiv.innerHTML = `
                     <div class="message-bubble ${msg.is_visitor ? 'user' : 'bot'}">
-                        <p class="body-text whitespace-pre-line leading-relaxed">${msg.message}</p>
-                        <p class="small-text mt-2 text-gray-500">
-                            ${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </p>
+                        ${showAvatar ? '<img src="./images/eva-avatar.png" alt="Eva" class="avatar">' : ''}
+                        <div class="${showAvatar ? 'ml-2' : ''}">
+                            <p class="body-text whitespace-pre-line leading-relaxed">${msg.message}</p>
+                            <p class="small-text mt-2 text-gray-500">
+                                ${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                        </div>
                     </div>
                 `;
                 
@@ -692,7 +885,17 @@
             });
             
             // Scroll to bottom smoothly
-            container.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function showTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            indicator.classList.remove('hidden');
+        }
+        
+        function hideTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            indicator.classList.add('hidden');
         }
 
         function setQuickReplies(replies) {
@@ -814,8 +1017,12 @@
             addUserMessage(message);
             input.value = '';
             
+            // Show typing indicator
+            showTypingIndicator();
+            
             // Simulate bot response
             setTimeout(() => {
+                hideTypingIndicator();
                 let botResponse = '';
                 const lowerMessage = message.toLowerCase();
                 
@@ -878,14 +1085,10 @@
             
             if (faqs.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-8">
-                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
-                            </svg>
-                        </div>
-                        <p class="text-gray-700 text-sm">No FAQs found</p>
-                        <p class="text-gray-600 text-xs mt-1">Try different keywords or browse all FAQs</p>
+                    <div class="empty-state">
+                        <div class="emoji">🔍</div>
+                        <p class="body-text">No FAQs found</p>
+                        <p class="small-text mt-1">Try different keywords or browse all FAQs</p>
                     </div>
                 `;
                 return;
