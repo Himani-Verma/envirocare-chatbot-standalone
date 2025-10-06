@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envirocare Chatbot - Iframe Integration Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        .copy-btn:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="max-w-4xl mx-auto p-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-8 text-center">
+            🤖 Envirocare Chatbot - Iframe Integration Guide
+        </h1>
+
+        <!-- Basic Integration -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">1. Basic Integration</h2>
+            <p class="text-gray-600 mb-4">Simple iframe embedding for any website:</p>
+            <div class="relative">
+                <button class="copy-btn" onclick="copyCode('basic-code')">Copy</button>
+                <pre id="basic-code" class="code-block"><code>&lt;iframe 
+    src="https://your-domain.com/chatbot.html" 
+    width="400" 
+    height="600" 
+    frameborder="0"
+    title="Envirocare Labs Chatbot"
+&gt;&lt;/iframe&gt;</code></pre>
+            </div>
+        </div>
+
+        <!-- Responsive Integration -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">2. Responsive Integration</h2>
+            <p class="text-gray-600 mb-4">Mobile-friendly responsive design:</p>
+            <div class="relative">
+                <button class="copy-btn" onclick="copyCode('responsive-code')">Copy</button>
+                <pre id="responsive-code" class="code-block"><code>&lt;iframe 
+    src="https://your-domain.com/chatbot.html" 
+    width="100%" 
+    height="600" 
+    style="max-width: 400px; border-radius: 15px;"
+    frameborder="0"
+&gt;&lt;/iframe&gt;</code></pre>
+            </div>
+        </div>
+
+        <!-- Styled Integration -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">3. Styled Integration</h2>
+            <p class="text-gray-600 mb-4">With custom container styling and shadow effects:</p>
+            <div class="relative">
+                <button class="copy-btn" onclick="copyCode('styled-code')">Copy</button>
+                <pre id="styled-code" class="code-block"><code>&lt;div style="border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2);"&gt;
+    &lt;iframe 
+        src="https://your-domain.com/chatbot.html" 
+        width="400" 
+        height="600"
+        frameborder="0"
+    &gt;&lt;/iframe&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+        </div>
+
+        <!-- Framework Examples -->
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- React Example -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">React Component</h3>
+                <div class="relative">
+                    <button class="copy-btn" onclick="copyCode('react-code')">Copy</button>
+                    <pre id="react-code" class="code-block"><code>import React from 'react';
+
+function ChatbotWidget() {
+  return (
+    &lt;iframe 
+      src="https://your-domain.com/chatbot.html" 
+      width="400" 
+      height="600" 
+      frameBorder="0"
+      title="Envirocare Labs Chatbot"
+      style={{
+        border: 'none',
+        borderRadius: '15px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+      }}
+    /&gt;
+  );
+}
+
+export default ChatbotWidget;</code></pre>
+                </div>
+            </div>
+
+            <!-- Vue Example -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-4">Vue Component</h3>
+                <div class="relative">
+                    <button class="copy-btn" onclick="copyCode('vue-code')">Copy</button>
+                    <pre id="vue-code" class="code-block"><code>&lt;template&gt;
+  &lt;iframe 
+    src="https://your-domain.com/chatbot.html" 
+    width="400" 
+    height="600" 
+    frameborder="0"
+    title="Envirocare Labs Chatbot"
+    class="chatbot-iframe"
+  /&gt;
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+.chatbot-iframe {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+&lt;/style&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- WordPress Integration -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">4. WordPress Integration</h2>
+            <p class="text-gray-600 mb-4">Add to your theme's functions.php or use a plugin:</p>
+            <div class="relative">
+                <button class="copy-btn" onclick="copyCode('wordpress-code')">Copy</button>
+                <pre id="wordpress-code" class="code-block"><code>// Add to functions.php
+function add_envirocare_chatbot() {
+    echo '&lt;div id="envirocare-chatbot"&gt;
+        &lt;iframe 
+            src="https://your-domain.com/chatbot.html" 
+            width="400" 
+            height="600" 
+            frameborder="0"
+            title="Envirocare Labs Chatbot"
+            style="border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);"
+        &gt;&lt;/iframe&gt;
+    &lt;/div&gt;';
+}
+add_action('wp_footer', 'add_envirocare_chatbot');
+
+// Or add to specific pages only
+function add_chatbot_to_contact_page() {
+    if (is_page('contact')) {
+        add_envirocare_chatbot();
+    }
+}
+add_action('wp_footer', 'add_chatbot_to_contact_page');</code></pre>
+            </div>
+        </div>
+
+        <!-- Size Variations -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">5. Size Variations</h2>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Small (350x500)</h3>
+                    <div class="relative">
+                        <button class="copy-btn" onclick="copyCode('small-code')">Copy</button>
+                        <pre id="small-code" class="code-block"><code>&lt;iframe 
+    src="https://your-domain.com/chatbot.html" 
+    width="350" 
+    height="500" 
+    frameborder="0"
+&gt;&lt;/iframe&gt;</code></pre>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Medium (400x600)</h3>
+                    <div class="relative">
+                        <button class="copy-btn" onclick="copyCode('medium-code')">Copy</button>
+                        <pre id="medium-code" class="code-block"><code>&lt;iframe 
+    src="https://your-domain.com/chatbot.html" 
+    width="400" 
+    height="600" 
+    frameborder="0"
+&gt;&lt;/iframe&gt;</code></pre>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Large (500x700)</h3>
+                    <div class="relative">
+                        <button class="copy-btn" onclick="copyCode('large-code')">Copy</button>
+                        <pre id="large-code" class="code-block"><code>&lt;iframe 
+    src="https://your-domain.com/chatbot.html" 
+    width="500" 
+    height="700" 
+    frameborder="0"
+&gt;&lt;/iframe&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Demo -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">6. Live Demo</h2>
+            <p class="text-gray-600 mb-4">Test the chatbot integration below:</p>
+            <div class="flex justify-center">
+                <iframe 
+                    src="chatbot.html" 
+                    width="400" 
+                    height="600" 
+                    frameborder="0"
+                    title="Envirocare Labs Chatbot Demo"
+                    class="rounded-lg shadow-lg"
+                ></iframe>
+            </div>
+        </div>
+
+        <!-- Deployment Instructions -->
+        <div class="bg-blue-50 rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-blue-900 mb-4">🚀 Deployment Instructions</h2>
+            <ol class="list-decimal list-inside space-y-2 text-blue-800">
+                <li>Upload the <code>chatbot.html</code> file to your web server</li>
+                <li>Ensure the file is accessible via HTTPS</li>
+                <li>Replace <code>https://your-domain.com/chatbot.html</code> with your actual URL</li>
+                <li>Test the iframe integration on your website</li>
+                <li>Customize the size and styling as needed</li>
+            </ol>
+        </div>
+
+        <!-- Support -->
+        <div class="bg-gray-100 rounded-lg p-6 text-center">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Need Help?</h3>
+            <p class="text-gray-600 mb-4">Contact us for integration support</p>
+            <div class="flex justify-center space-x-4">
+                <a href="mailto:info@envirocarelabs.com" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    Email Support
+                </a>
+                <a href="https://github.com/Himani-Verma/envirocare-chatbot-standalone" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    GitHub Repository
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Show success message
+                const button = element.parentElement.querySelector('.copy-btn');
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#10b981';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#3b82f6';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Failed to copy code. Please select and copy manually.');
+            });
+        }
+    </script>
+</body>
+</html>
