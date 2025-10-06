@@ -131,18 +131,27 @@
             margin-bottom: 8px;
             word-wrap: break-word;
             position: relative;
+            animation: messageSlideIn 0.3s ease-out;
+            transition: all 0.2s ease;
+        }
+        
+        .envirocare-chat .message-bubble:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
         }
         
         .envirocare-chat .message-bubble.user {
-            background: #f1f3f7;
+            background: linear-gradient(135deg, #f1f3f7, #e8ecf7);
             margin-left: auto;
             color: var(--ec-ink);
+            border: 1px solid rgba(45, 72, 145, 0.1);
         }
         
         .envirocare-chat .message-bubble.bot {
-            background: #e9efff;
+            background: linear-gradient(135deg, #e9efff, #f0f4ff);
             margin-right: auto;
             color: #102a56;
+            border: 1px solid rgba(45, 72, 145, 0.15);
         }
         
         .envirocare-chat .message-bubble.bot .avatar {
@@ -151,6 +160,18 @@
             border-radius: 50%;
             margin-right: 8px;
             border: 2px solid var(--ec-blue);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
         
         /* FAQ card hover effects */
@@ -175,6 +196,23 @@
             border: none;
             font-weight: 500;
             height: 52px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .envirocare-chat .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .envirocare-chat .btn-primary:hover::before {
+            left: 100%;
         }
         
         .envirocare-chat .btn-primary:hover {
@@ -189,10 +227,28 @@
             border: 2px solid var(--ec-blue);
             border-radius: var(--radius);
             transition: all 0.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .envirocare-chat .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--ec-blue);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .envirocare-chat .btn-secondary:hover::before {
+            width: 100%;
         }
         
         .envirocare-chat .btn-secondary:hover {
-            background: #e8ecf7;
+            color: white;
             transform: translateY(-1px);
         }
         
@@ -205,6 +261,49 @@
             padding: 4px 12px;
             font-size: 12px;
             font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .envirocare-chat .trust-chip:hover {
+            background: rgba(100, 170, 83, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        /* Quick reply chips */
+        .envirocare-chat .quick-reply-chip {
+            background: white;
+            color: var(--ec-blue);
+            border: 2px solid var(--ec-blue);
+            border-radius: 25px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .envirocare-chat .quick-reply-chip::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--ec-blue);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+        
+        .envirocare-chat .quick-reply-chip:hover::before {
+            left: 0;
+        }
+        
+        .envirocare-chat .quick-reply-chip:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
         }
         
         /* Typing indicator */
@@ -306,7 +405,7 @@
 <body class="bg-gray-100">
     <!-- Floating Widget Button -->
     <div id="floating-widget" class="fixed bottom-6 right-6 z-50">
-        <button onclick="showChatbot()" class="bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 z-50 group">
+        <button onclick="showChatbot()" class="bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 z-50 group pulse-animation">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
             </svg>
@@ -558,6 +657,7 @@
         let quickReplies = [];
         let isLoading = false;
         let selectedCountryCode = '+91';
+        let hasWelcomeMessage = false;
         let showCountryDropdown = false;
 
         // Country codes data
@@ -733,9 +833,11 @@
             document.getElementById('chat-input').classList.remove('hidden');
             updateNavigation('chat');
             
-            if (messages.length === 0) {
+            // Only add welcome message if no messages exist and not already added
+            if (messages.length === 0 && !hasWelcomeMessage) {
                 addBotMessage("Hello! 👋 Welcome to *Envirocare Labs*! I'm Eva, your Virtual Assistant. Would you like to explore our services or have a specific question?");
                 setQuickReplies(['Yes', 'No', 'Ask a question']);
+                hasWelcomeMessage = true;
             }
         }
 
@@ -913,11 +1015,7 @@
             
             replies.forEach((reply, index) => {
                 const button = document.createElement('button');
-                button.className = `px-4 py-3 rounded-xl border-2 transition-all duration-200 shadow-sm body-text font-medium text-center focus-visible ${
-                    ['Previous', 'Next', 'Back'].includes(reply) 
-                        ? 'btn-secondary' 
-                        : 'btn-primary'
-                }`;
+                button.className = `quick-reply-chip focus-visible`;
                 button.textContent = reply;
                 button.onclick = () => handleQuickReply(reply);
                 grid.appendChild(button);
@@ -1062,6 +1160,7 @@
             isRegistered = false;
             messages = [];
             conversationStep = 'ask_explore';
+            hasWelcomeMessage = false;
             setQuickReplies([]);
             
             showHome();
