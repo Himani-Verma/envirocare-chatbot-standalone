@@ -18,10 +18,11 @@
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Poppins', sans-serif; }
-        .animate-bounce-delay-1 { animation-delay: 0.1s; }
-        .animate-bounce-delay-2 { animation-delay: 0.2s; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { 
+            font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f6f7fb;
+        }
         
         /* Enhanced animations */
         @keyframes slideIn {
@@ -34,6 +35,11 @@
             to { transform: translateX(100%); opacity: 0; }
         }
         
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -41,6 +47,7 @@
         
         .slide-in { animation: slideIn 0.3s ease-out; }
         .slide-out { animation: slideOut 0.3s ease-in; }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
         .pulse-animation { animation: pulse 2s infinite; }
         
         /* Enhanced scrollbar */
@@ -61,6 +68,101 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #1e3a8a;
         }
+        
+        /* Chat message bubbles */
+        .message-bubble {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            margin-bottom: 8px;
+            word-wrap: break-word;
+        }
+        
+        .message-bubble.user {
+            background: #f1f1f1;
+            margin-left: auto;
+        }
+        
+        .message-bubble.bot {
+            background: #e9efff;
+            margin-right: auto;
+        }
+        
+        /* FAQ card hover effects */
+        .faq-card {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        
+        .faq-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        /* Button enhancements */
+        .btn-primary {
+            background: #2d4891;
+            color: white;
+            border-radius: 12px;
+            transition: all 0.2s ease-in-out;
+            border: none;
+            font-weight: 500;
+        }
+        
+        .btn-primary:hover {
+            background: #1e3a8a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(45, 72, 145, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #2d4891;
+            border: 2px solid #2d4891;
+            border-radius: 12px;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .btn-secondary:hover {
+            background: #e8ecf7;
+            transform: translateY(-1px);
+        }
+        
+        /* Focus styles for accessibility */
+        .focus-visible:focus {
+            outline: 2px solid #2d4891;
+            outline-offset: 2px;
+        }
+        
+        /* Typography */
+        .heading {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
+            letter-spacing: 0.2px;
+        }
+        
+        .subheading {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.4;
+            letter-spacing: 0.2px;
+        }
+        
+        .body-text {
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.5;
+            letter-spacing: 0.2px;
+        }
+        
+        .small-text {
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: 0.2px;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -80,7 +182,7 @@
     </div>
 
     <!-- Chatbot Container -->
-    <div id="chatbot-container" class="fixed top-4 right-4 w-96 h-[500px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden font-poppins flex flex-col backdrop-blur-sm bg-white/95 hidden">
+    <div id="chatbot-container" class="fixed top-4 right-4 w-96 h-[90vh] max-h-[600px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden flex flex-col backdrop-blur-sm bg-white/95 hidden">
         <!-- Header -->
         <div class="text-white p-5 bg-gradient-to-r from-primary to-primary-dark rounded-t-3xl">
             <div class="flex items-center justify-between">
@@ -101,57 +203,57 @@
         </div>
 
         <!-- Content Area -->
-        <div id="content-area" class="flex-1 p-3 bg-gradient-to-b from-gray-50 to-white overflow-hidden" style="height: calc(500px - 120px);">
+        <div id="content-area" class="flex-1 p-4 bg-gradient-to-b from-gray-50 to-white overflow-y-auto custom-scrollbar" style="scroll-behavior: smooth;">
             <!-- Home Screen -->
-            <div id="home-screen" class="text-center space-y-3 h-full flex flex-col justify-center">
-                <div class="space-y-2">
-                    <h2 class="text-lg font-semibold text-gray-700 leading-tight">
+            <div id="home-screen" class="text-center space-y-6 py-8">
+                <div class="space-y-3">
+                    <h2 class="heading text-gray-800">
                         Hey! How can we help you today?
                     </h2>
-                    <p class="text-gray-600 text-xs font-medium">I'm Eva, your AI assistant. Let's get started!</p>
+                    <p class="body-text text-gray-600">I'm Eva, your AI assistant. Let's get started!</p>
                 </div>
-                <div class="space-y-2">
-                    <button onclick="startChat()" class="w-full bg-gradient-to-r from-primary to-primary-dark text-white py-2 px-3 rounded-lg hover:from-primary-dark hover:to-primary-dark transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                <div class="space-y-3">
+                    <button onclick="startChat()" class="btn-primary w-full py-3 px-4 flex items-center justify-center space-x-2 focus-visible">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                         </svg>
-                        <span class="font-semibold text-xs">Chat with Eva now</span>
+                        <span class="subheading">Chat with Eva now</span>
                     </button>
-                    <button onclick="showFAQ()" class="w-full bg-white text-gray-700 py-2 px-3 rounded-lg hover:bg-gray-50 transition-all duration-200 border-2 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md">
-                        <span class="font-medium text-xs">Browse FAQ</span>
+                    <button onclick="showFAQ()" class="btn-secondary w-full py-3 px-4 focus-visible">
+                        <span class="subheading">Browse FAQ</span>
                     </button>
                 </div>
             </div>
 
             <!-- Visitor Form -->
-            <div id="visitor-form" class="h-full flex flex-col justify-center space-y-3 hidden">
+            <div id="visitor-form" class="space-y-6 py-8 hidden">
                 <div class="text-center">
-                    <h3 class="text-lg font-bold text-gray-800 mb-1">Welcome to Envirocare Labs!</h3>
-                    <p class="text-gray-600 text-xs">Please provide your details to start the conversation!</p>
+                    <h3 class="heading text-gray-800 mb-2">Welcome to Envirocare Labs!</h3>
+                    <p class="body-text text-gray-600">Please provide your details to start the conversation!</p>
                 </div>
-                <form id="visitor-form-element" class="space-y-2">
+                <form id="visitor-form-element" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Name</label>
+                        <label class="block subheading text-gray-700 mb-2">Name</label>
                         <input id="visitor-name" type="text" placeholder="Enter your name" required
-                            class="w-full px-2 py-1.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-sm" />
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 body-text focus-visible" />
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Email</label>
+                        <label class="block subheading text-gray-700 mb-2">Email</label>
                         <input id="visitor-email" type="email" placeholder="Enter your email" required
-                            class="w-full px-2 py-1.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-sm" />
+                            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 body-text focus-visible" />
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 mb-1">Phone Number</label>
+                        <label class="block subheading text-gray-700 mb-2">Phone Number</label>
                         <div class="flex items-stretch">
                             <div class="relative">
                                 <button type="button" onclick="toggleCountryDropdown()" 
-                                    class="flex items-center justify-center px-1.5 py-1.5 border border-r-0 border-gray-200 rounded-l-md bg-white/80 backdrop-blur-sm text-gray-900 hover:bg-gray-50 transition-all duration-200 w-16 h-8 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent">
-                                    <span class="text-xs font-medium flex items-center">
-                                        <span class="mr-0.5" id="selected-flag">🇮🇳</span>
+                                    class="flex items-center justify-center px-3 py-3 border border-r-0 border-gray-200 rounded-l-xl bg-white/80 backdrop-blur-sm text-gray-900 hover:bg-gray-50 transition-all duration-200 w-20 h-12 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent focus-visible">
+                                    <span class="body-text font-medium flex items-center">
+                                        <span class="mr-1" id="selected-flag">🇮🇳</span>
                                         <span id="selected-code">+91</span>
                                     </span>
-                                    <svg class="w-1.5 h-1.5 ml-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    <svg class="w-3 h-3 ml-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
                                 
@@ -164,25 +266,25 @@
                             </div>
                             
                             <input id="visitor-phone" type="tel" placeholder="Enter your phone number" 
-                                class="flex-1 px-2 py-1.5 border border-gray-200 rounded-r-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 h-8 text-sm" />
+                                class="flex-1 px-4 py-3 border border-gray-200 rounded-r-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 h-12 body-text focus-visible" />
                         </div>
                     </div>
                     <button type="submit" id="start-chat-btn" 
-                        class="w-full bg-gradient-to-r from-primary to-primary-dark text-white py-1.5 px-3 rounded-md hover:from-primary-dark hover:to-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none text-sm">
-                        <span id="btn-text">Start Chat</span>
+                        class="btn-primary w-full py-3 px-4 disabled:opacity-50 disabled:cursor-not-allowed focus-visible">
+                        <span id="btn-text" class="subheading">Start Chat</span>
                     </button>
                 </form>
             </div>
 
             <!-- Chat Area -->
-            <div id="chat-area" class="h-full flex flex-col space-y-2 hidden">
-                <div class="flex justify-end mb-1">
+            <div id="chat-area" class="space-y-4 py-4 hidden">
+                <div class="flex justify-end">
                     <button onclick="resetChat()" 
-                        class="text-xs text-primary hover:text-primary-dark hover:underline transition-colors duration-200 px-2 py-1 rounded-md hover:bg-blue-50">
+                        class="small-text text-primary hover:text-primary-dark hover:underline transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-blue-50 focus-visible">
                         Start New Chat
                     </button>
                 </div>
-                <div id="messages-container" class="flex-1 overflow-hidden"></div>
+                <div id="messages-container" class="space-y-3 min-h-[300px]"></div>
                 <div id="loading-indicator" class="flex justify-start hidden">
                     <div class="bg-white text-gray-800 px-4 py-3 rounded-2xl shadow-md border border-gray-100">
                         <div class="flex space-x-1">
@@ -198,62 +300,62 @@
             </div>
 
             <!-- FAQ Area -->
-            <div id="faq-area" class="h-full flex flex-col space-y-2 hidden">
-                <div class="flex items-center space-x-2 mb-2">
-                    <div class="w-6 h-6 bg-gradient-to-r from-primary to-primary-dark rounded-full flex items-center justify-center">
-                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <div id="faq-area" class="space-y-6 py-4 hidden">
+                <div class="flex items-center space-x-3 mb-4">
+                    <div class="w-8 h-8 bg-gradient-to-r from-primary to-primary-dark rounded-full flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
-                    <h3 class="font-bold text-gray-800 text-sm">Search FAQ</h3>
+                    <h3 class="heading text-gray-800">Search FAQ</h3>
                 </div>
                 
                 <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-                        <svg class="h-3 w-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
                     <input type="text" id="faq-search" placeholder="Search FAQs..." 
-                        class="w-full pl-6 pr-3 py-1.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-sm" />
+                        class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 body-text focus-visible" />
                 </div>
 
-                <div id="faq-results" class="flex-1 overflow-hidden space-y-1"></div>
+                <div id="faq-results" class="space-y-3"></div>
             </div>
         </div>
 
         <!-- Chat Input -->
-        <div id="chat-input" class="p-2 border-t border-gray-100 bg-white/80 backdrop-blur-sm hidden">
-            <div class="flex space-x-2">
+        <div id="chat-input" class="p-4 border-t border-gray-100 bg-white/90 backdrop-blur-sm hidden">
+            <div class="flex space-x-3">
                 <input type="text" id="message-input" placeholder="Type your message here..." 
-                    class="flex-1 px-2 py-1.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90 backdrop-blur-sm text-black text-sm" />
+                    class="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90 backdrop-blur-sm text-black body-text focus-visible" />
                 <button onclick="sendMessage()" id="send-btn" 
-                    class="bg-gradient-to-r from-primary to-primary-dark text-white px-3 py-1.5 rounded-md hover:from-primary-dark hover:to-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none font-semibold text-sm">
-                    Send
+                    class="btn-primary px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed focus-visible">
+                    <span class="subheading">Send</span>
                 </button>
             </div>
         </div>
 
         <!-- Bottom Navigation -->
-        <div class="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-2">
+        <div class="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-3">
             <div class="flex justify-around">
-                <button onclick="showHome()" class="nav-btn flex flex-col items-center space-y-0.5 p-0.5 rounded-md transition-all duration-200 text-primary bg-blue-50">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                <button onclick="showHome()" class="nav-btn flex flex-col items-center space-y-1 p-2 rounded-lg transition-all duration-200 text-primary bg-blue-50 focus-visible">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <span class="text-xs font-medium">Home</span>
+                    <span class="small-text font-medium">Home</span>
                 </button>
-                <button onclick="startChat()" class="nav-btn flex flex-col items-center space-y-0.5 p-0.5 rounded-md transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                <button onclick="startChat()" class="nav-btn flex flex-col items-center space-y-1 p-2 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
-                    <span class="text-xs font-medium">Chat</span>
+                    <span class="small-text font-medium">Chat</span>
                 </button>
-                <button onclick="showFAQ()" class="nav-btn flex flex-col items-center space-y-0.5 p-0.5 rounded-md transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <button onclick="showFAQ()" class="nav-btn flex flex-col items-center space-y-1 p-2 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span class="text-xs font-medium">FAQ</span>
+                    <span class="small-text font-medium">FAQ</span>
                 </button>
             </div>
         </div>
@@ -578,13 +680,9 @@
                 messageDiv.className = `flex ${msg.is_visitor ? 'justify-end' : 'justify-start'}`;
                 
                 messageDiv.innerHTML = `
-                    <div class="max-w-xs px-4 py-3 rounded-2xl ${
-                        msg.is_visitor
-                            ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg'
-                            : 'bg-white text-gray-800 shadow-md border border-gray-100'
-                    }">
-                        <p class="text-sm whitespace-pre-line leading-relaxed">${msg.message}</p>
-                        <p class="text-xs mt-2 ${msg.is_visitor ? 'text-blue-100' : 'text-gray-700'}">
+                    <div class="message-bubble ${msg.is_visitor ? 'user' : 'bot'}">
+                        <p class="body-text whitespace-pre-line leading-relaxed">${msg.message}</p>
+                        <p class="small-text mt-2 text-gray-500">
                             ${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </p>
                     </div>
@@ -593,8 +691,8 @@
                 container.appendChild(messageDiv);
             });
             
-            // Scroll to bottom
-            container.scrollTop = container.scrollHeight;
+            // Scroll to bottom smoothly
+            container.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
 
         function setQuickReplies(replies) {
@@ -612,10 +710,10 @@
             
             replies.forEach((reply, index) => {
                 const button = document.createElement('button');
-                button.className = `px-4 py-3 rounded-xl border-2 transition-all duration-200 shadow-sm text-sm font-medium text-center ${
+                button.className = `px-4 py-3 rounded-xl border-2 transition-all duration-200 shadow-sm body-text font-medium text-center focus-visible ${
                     ['Previous', 'Next', 'Back'].includes(reply) 
-                        ? 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 hover:border-gray-400' 
-                        : 'bg-white text-primary border-primary hover:bg-primary hover:text-white hover:shadow-md'
+                        ? 'btn-secondary' 
+                        : 'btn-primary'
                 }`;
                 button.textContent = reply;
                 button.onclick = () => handleQuickReply(reply);
@@ -795,31 +893,31 @@
             
             faqs.forEach(faq => {
                 const faqDiv = document.createElement('div');
-                faqDiv.className = 'bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200';
+                faqDiv.className = 'faq-card bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm';
                 faqDiv.innerHTML = `
                     <div class="p-4 cursor-pointer group" onclick="toggleFAQ(${faq.id})">
                         <div class="flex items-center justify-between">
                             <div class="flex-1">
-                                <h4 class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors duration-200">
+                                <h4 class="subheading text-gray-800 group-hover:text-primary transition-colors duration-200">
                                     ${faq.question}
                                 </h4>
-                                <div class="flex items-center space-x-2 mt-1">
-                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-primary">
+                                <div class="flex items-center space-x-2 mt-2">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full small-text font-medium bg-blue-100 text-primary">
                                         ${faq.category}
                                     </span>
-                                    <span class="text-xs text-gray-700">${faq.tags.slice(0, 2).join(', ')}</span>
+                                    <span class="small-text text-gray-600">${faq.tags.slice(0, 2).join(', ')}</span>
                                 </div>
                             </div>
-                            <svg class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors duration-200 transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            <svg class="w-4 h-4 text-gray-400 group-hover:text-primary transition-colors duration-200 transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>
                         </div>
                     </div>
                     <div id="faq-answer-${faq.id}" class="hidden px-4 pb-4">
-                        <div class="pt-2 border-t border-gray-100">
-                            <p class="text-sm text-gray-700 leading-relaxed">${faq.answer}</p>
+                        <div class="pt-3 border-t border-gray-100">
+                            <p class="body-text text-gray-700 leading-relaxed">${faq.answer}</p>
                             <div class="flex flex-wrap gap-1 mt-3">
-                                ${faq.tags.map(tag => `<span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">#${tag}</span>`).join('')}
+                                ${faq.tags.map(tag => `<span class="inline-flex items-center px-2 py-1 rounded-md small-text font-medium bg-gray-100 text-gray-700">#${tag}</span>`).join('')}
                             </div>
                         </div>
                     </div>
