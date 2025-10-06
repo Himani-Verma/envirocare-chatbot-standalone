@@ -1,0 +1,30 @@
+{
+  "name": "envirocare-chatbot-standalone",
+  "version": "1.0.0",
+  "description": "A standalone, embeddable chatbot widget for Envirocare Labs environmental testing services",
+  "main": "chatbot.html",
+  "scripts": {
+    "dev": "python -m http.server 3000",
+    "serve": "python -m http.server 3000",
+    "start": "python -m http.server 3000"
+  },
+  "keywords": [
+    "chatbot",
+    "environmental",
+    "testing",
+    "widget",
+    "iframe",
+    "standalone",
+    "envirocare"
+  ],
+  "author": "Envirocare Labs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Himani-Verma/envirocare-chatbot-standalone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Himani-Verma/envirocare-chatbot-standalone/issues"
+  },
+  "homepage": "https://github.com/Himani-Verma/envirocare-chatbot-standalone#readme"
+}

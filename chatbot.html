@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envirocare Labs Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2d4891',
+                        'primary-dark': '#1e3a8a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .animate-bounce-delay-1 { animation-delay: 0.1s; }
+        .animate-bounce-delay-2 { animation-delay: 0.2s; }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div id="chatbot-container" class="fixed top-20 bottom-20 right-6 w-96 h-[500px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden font-poppins flex flex-col backdrop-blur-sm bg-white/95">
+        <!-- Header -->
+        <div class="text-white p-5 bg-gradient-to-r from-primary to-primary-dark rounded-t-3xl">
+            <div class="flex items-center justify-between">
+                <button class="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded-lg hover:bg-white/10">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div class="flex items-center justify-center flex-1">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTYwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSI4MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5FbnZpcm9jYXJlIExhYnM8L3RleHQ+Cjwvc3ZnPgo=" alt="Envirocare Labs" class="drop-shadow-sm" />
+                </div>
+                <button onclick="toggleChatbot()" class="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded-lg hover:bg-white/10">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div id="content-area" class="flex-1 p-5 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
+            <!-- Home Screen -->
+            <div id="home-screen" class="text-center space-y-6">
+                <div class="space-y-4">
+                    <h2 class="text-2xl font-semibold text-gray-700 leading-relaxed">
+                        Hey! How can we help you today?
+                    </h2>
+                    <p class="text-gray-600 text-base font-medium">I'm Eva, your AI assistant. Let's get started!</p>
+                </div>
+                <div class="space-y-3">
+                    <button onclick="startChat()" class="w-full bg-gradient-to-r from-primary to-primary-dark text-white py-4 px-6 rounded-xl hover:from-primary-dark hover:to-primary-dark transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        <span class="font-semibold">Chat with Eva now</span>
+                    </button>
+                    <button onclick="showFAQ()" class="w-full bg-white text-gray-700 py-4 px-6 rounded-xl hover:bg-gray-50 transition-all duration-200 border-2 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md">
+                        <span class="font-medium">Browse FAQ</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Visitor Form -->
+            <div id="visitor-form" class="space-y-5 hidden">
+                <div class="text-center">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Welcome to Envirocare Labs!</h3>
+                    <p class="text-gray-600 text-sm">Please provide your details to start the conversation!</p>
+                </div>
+                <form id="visitor-form-element" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Name</label>
+                        <input id="visitor-name" type="text" placeholder="Enter your name" required
+                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                        <input id="visitor-email" type="email" placeholder="Enter your email" required
+                            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                        <div class="flex items-stretch">
+                            <div class="relative">
+                                <button type="button" onclick="toggleCountryDropdown()" 
+                                    class="flex items-center justify-center px-3 py-3 border-2 border-r-0 border-gray-200 rounded-l-xl bg-white/80 backdrop-blur-sm text-gray-900 hover:bg-gray-50 transition-all duration-200 w-24 h-12 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <span class="text-sm font-medium flex items-center">
+                                        <span class="mr-1" id="selected-flag">🇮🇳</span>
+                                        <span id="selected-code">+91</span>
+                                    </span>
+                                    <svg class="w-3 h-3 ml-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                
+                                <div id="country-dropdown" class="absolute top-full left-0 z-50 w-72 max-h-64 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-xl mt-1 hidden">
+                                    <div class="p-1">
+                                        <div class="text-xs font-medium text-gray-500 mb-1 px-3 py-2 border-b border-gray-100">Select Country</div>
+                                        <div id="country-list"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <input id="visitor-phone" type="tel" placeholder="Enter your phone number" 
+                                class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-r-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 h-12" />
+                        </div>
+                    </div>
+                    <button type="submit" id="start-chat-btn" 
+                        class="w-full bg-gradient-to-r from-primary to-primary-dark text-white py-3 px-6 rounded-xl hover:from-primary-dark hover:to-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none">
+                        <span id="btn-text">Start Chat</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Chat Area -->
+            <div id="chat-area" class="space-y-4 hidden">
+                <div class="flex justify-end mb-3">
+                    <button onclick="resetChat()" 
+                        class="text-sm text-primary hover:text-primary-dark hover:underline transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-blue-50">
+                        Start New Chat
+                    </button>
+                </div>
+                <div id="messages-container"></div>
+                <div id="loading-indicator" class="flex justify-start hidden">
+                    <div class="bg-white text-gray-800 px-4 py-3 rounded-2xl shadow-md border border-gray-100">
+                        <div class="flex space-x-1">
+                            <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
+                            <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce animate-bounce-delay-1"></div>
+                            <div class="w-2 h-2 bg-blue-400 rounded-full animate-bounce animate-bounce-delay-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="quick-replies" class="flex justify-start mt-4 hidden">
+                    <div class="grid grid-cols-2 gap-2 w-full" id="quick-replies-grid"></div>
+                </div>
+            </div>
+
+            <!-- FAQ Area -->
+            <div id="faq-area" class="space-y-4 hidden">
+                <div class="flex items-center space-x-3 mb-5">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-primary-dark rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-gray-800 text-lg">Search FAQ</h3>
+                </div>
+                
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <input type="text" id="faq-search" placeholder="Search FAQs..." 
+                        class="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900" />
+                </div>
+
+                <div id="faq-results" class="space-y-3 max-h-64 overflow-y-auto"></div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div id="chat-input" class="p-4 border-t border-gray-100 bg-white/80 backdrop-blur-sm hidden">
+            <div class="flex space-x-3">
+                <input type="text" id="message-input" placeholder="Type your message here..." 
+                    class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90 backdrop-blur-sm text-black" />
+                <button onclick="sendMessage()" id="send-btn" 
+                    class="bg-gradient-to-r from-primary to-primary-dark text-white px-6 py-3 rounded-xl hover:from-primary-dark hover:to-primary-dark disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none font-semibold">
+                    Send
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-4">
+            <div class="flex justify-around">
+                <button onclick="showHome()" class="nav-btn flex flex-col items-center space-y-2 p-2 rounded-xl transition-all duration-200 text-primary bg-blue-50">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <span class="text-xs font-medium">Home</span>
+                </button>
+                <button onclick="startChat()" class="nav-btn flex flex-col items-center space-y-2 p-2 rounded-xl transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <span class="text-xs font-medium">Chat</span>
+                </button>
+                <button onclick="showFAQ()" class="nav-btn flex flex-col items-center space-y-2 p-2 rounded-xl transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-xs font-medium">FAQ</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let currentScreen = 'home';
+        let isRegistered = false;
+        let visitorId = null;
+        let messages = [];
+        let conversationStep = 'ask_explore';
+        let quickReplies = [];
+        let isLoading = false;
+        let selectedCountryCode = '+91';
+        let showCountryDropdown = false;
+
+        // Country codes data
+        const countryCodes = [
+            { code: '+91', country: 'India', flag: '🇮🇳' },
+            { code: '+1', country: 'United States', flag: '🇺🇸' },
+            { code: '+44', country: 'United Kingdom', flag: '🇬🇧' },
+            { code: '+86', country: 'China', flag: '🇨🇳' },
+            { code: '+81', country: 'Japan', flag: '🇯🇵' },
+            { code: '+49', country: 'Germany', flag: '🇩🇪' },
+            { code: '+33', country: 'France', flag: '🇫🇷' },
+            { code: '+39', country: 'Italy', flag: '🇮🇹' },
+            { code: '+34', country: 'Spain', flag: '🇪🇸' },
+            { code: '+7', country: 'Russia', flag: '🇷🇺' },
+            { code: '+55', country: 'Brazil', flag: '🇧🇷' },
+            { code: '+61', country: 'Australia', flag: '🇦🇺' },
+            { code: '+82', country: 'South Korea', flag: '🇰🇷' },
+            { code: '+65', country: 'Singapore', flag: '🇸🇬' },
+            { code: '+971', country: 'UAE', flag: '🇦🇪' }
+        ];
+
+        // FAQ Data
+        const faqData = [
+            {
+                id: 1,
+                question: 'How do I schedule an environmental assessment?',
+                answer: 'You can schedule an environmental assessment by contacting our team at info@envirocarelabs.com or calling +1-555-0123. We offer flexible scheduling including emergency assessments.',
+                category: 'Scheduling',
+                tags: ['assessment', 'environmental', 'scheduling', 'contact']
+            },
+            {
+                id: 2,
+                question: 'What are your laboratory testing services?',
+                answer: 'We offer comprehensive testing services including water quality analysis, food safety testing, environmental monitoring, air quality assessment, and soil contamination testing.',
+                category: 'Services',
+                tags: ['testing', 'laboratory', 'water', 'food', 'environmental', 'air', 'soil']
+            },
+            {
+                id: 3,
+                question: 'How can I contact the support team?',
+                answer: 'Our support team is available via email at support@envirocarelabs.com, phone at +1-555-0123, or through our live chat system. We respond within 2 hours during business hours.',
+                category: 'Support',
+                tags: ['contact', 'support', 'email', 'phone', 'chat']
+            },
+            {
+                id: 4,
+                question: 'What are your testing turnaround times?',
+                answer: 'Standard tests typically take 3-5 business days. Rush services are available for urgent cases with results in 24-48 hours. Custom analysis may take 1-2 weeks.',
+                category: 'Timing',
+                tags: ['turnaround', 'timing', 'rush', 'urgent', 'custom']
+            },
+            {
+                id: 5,
+                question: 'Do you provide emergency response services?',
+                answer: 'Yes, we offer 24/7 emergency response for environmental incidents, contamination events, and urgent testing needs. Call our emergency hotline for immediate assistance.',
+                category: 'Emergency',
+                tags: ['emergency', '24/7', 'urgent', 'incident', 'contamination']
+            },
+            {
+                id: 6,
+                question: 'What certifications do your laboratories have?',
+                answer: 'Our laboratories are ISO 17025 accredited, NELAP certified, and EPA approved. We maintain strict quality control standards and participate in proficiency testing programs.',
+                category: 'Certification',
+                tags: ['certification', 'ISO', 'NELAP', 'EPA', 'accreditation', 'quality']
+            }
+        ];
+
+        // Service options
+        const MAIN_SERVICES = [
+            'Water Testing',
+            'Food Testing',
+            'Environmental Testing',
+            'Shelf-Life Study',
+            'Others'
+        ];
+
+        const WATER_TYPES = [
+            'Drinking Water Testing',
+            'FSSAI Compliance Water Testing',
+            'Swimming Pool Water Testing',
+            'Others'
+        ];
+
+        const ENV_TYPES = [
+            'ETP Water Testing',
+            'STP Water Testing',
+            'Ambient Air',
+            'Stack Emission',
+            'Workplace Monitoring',
+            'IAQ [Indoor Air Quality]',
+            'Noise Testing',
+            'Illumination',
+            'Others'
+        ];
+
+        const FOOD_CATEGORIES = [
+            'Dairy products and analogues',
+            'Fats and oils, and fat emulsions',
+            'Edible ices, including sherbet and sorbet',
+            'Fruits, vegetables, seaweeds, nuts, and seeds',
+            'Confectionery',
+            'Cereals, grains, roots, tubers, pulses, and legumes',
+            'Bakery products',
+            'Meat and meat products including poultry',
+            'Fish and fish products, including molluscs, crustaceans, and echinoderms',
+            'Eggs and egg products',
+            'Sweeteners, including honey',
+            'Salts, spices, soups, sauces, salads, and protein products',
+            'Foodstuffs for particular nutritional uses',
+            'Beverages, excluding dairy products',
+            'Ready-to-eat savouries',
+            'Substances added to food',
+            'Standardised Food Product',
+            'Indian Sweets and Snacks',
+            'Hemp Seeds and Seed Products',
+            'Others'
+        ];
+
+        // Initialize chatbot
+        function initChatbot() {
+            populateCountryList();
+            showHome();
+            
+            // Check for existing visitor
+            const storedVisitorId = localStorage.getItem('envirocareVisitorId');
+            if (storedVisitorId) {
+                visitorId = storedVisitorId;
+                isRegistered = true;
+                startChat();
+            }
+
+            // Setup form submission
+            document.getElementById('visitor-form-element').addEventListener('submit', handleVisitorForm);
+            
+            // Setup message input
+            document.getElementById('message-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && conversationStep === 'free_text') {
+                    sendMessage();
+                }
+            });
+
+            // Setup FAQ search
+            document.getElementById('faq-search').addEventListener('input', filterFAQs);
+        }
+
+        // Navigation functions
+        function showHome() {
+            currentScreen = 'home';
+            hideAllScreens();
+            document.getElementById('home-screen').classList.remove('hidden');
+            updateNavigation('home');
+        }
+
+        function startChat() {
+            if (!isRegistered) {
+                showVisitorForm();
+            } else {
+                showChatArea();
+            }
+        }
+
+        function showVisitorForm() {
+            currentScreen = 'form';
+            hideAllScreens();
+            document.getElementById('visitor-form').classList.remove('hidden');
+            updateNavigation('chat');
+        }
+
+        function showChatArea() {
+            currentScreen = 'chat';
+            hideAllScreens();
+            document.getElementById('chat-area').classList.remove('hidden');
+            document.getElementById('chat-input').classList.remove('hidden');
+            updateNavigation('chat');
+            
+            if (messages.length === 0) {
+                addBotMessage("Hello! 👋 Welcome to *Envirocare Labs*! I'm Eva, your Virtual Assistant. Would you like to explore our services or have a specific question?");
+                setQuickReplies(['Yes', 'No', 'Ask a question']);
+            }
+        }
+
+        function showFAQ() {
+            currentScreen = 'faq';
+            hideAllScreens();
+            document.getElementById('faq-area').classList.remove('hidden');
+            updateNavigation('faq');
+            displayFAQs(faqData);
+        }
+
+        function hideAllScreens() {
+            document.getElementById('home-screen').classList.add('hidden');
+            document.getElementById('visitor-form').classList.add('hidden');
+            document.getElementById('chat-area').classList.add('hidden');
+            document.getElementById('faq-area').classList.add('hidden');
+            document.getElementById('chat-input').classList.add('hidden');
+        }
+
+        function updateNavigation(activeTab) {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-primary', 'bg-blue-50');
+                btn.classList.add('text-gray-700', 'hover:text-gray-900', 'hover:bg-gray-50');
+            });
+            
+            if (activeTab === 'home') {
+                document.querySelector('.nav-btn').classList.add('text-primary', 'bg-blue-50');
+                document.querySelector('.nav-btn').classList.remove('text-gray-700', 'hover:text-gray-900', 'hover:bg-gray-50');
+            } else if (activeTab === 'chat') {
+                document.querySelectorAll('.nav-btn')[1].classList.add('text-primary', 'bg-blue-50');
+                document.querySelectorAll('.nav-btn')[1].classList.remove('text-gray-700', 'hover:text-gray-900', 'hover:bg-gray-50');
+            } else if (activeTab === 'faq') {
+                document.querySelectorAll('.nav-btn')[2].classList.add('text-primary', 'bg-blue-50');
+                document.querySelectorAll('.nav-btn')[2].classList.remove('text-gray-700', 'hover:text-gray-900', 'hover:bg-gray-50');
+            }
+        }
+
+        // Country dropdown functions
+        function populateCountryList() {
+            const countryList = document.getElementById('country-list');
+            countryList.innerHTML = '';
+            
+            countryCodes.forEach(country => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = `w-full flex items-center px-3 py-2 text-sm hover:bg-gray-50 rounded transition-colors ${
+                    selectedCountryCode === country.code ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                }`;
+                button.innerHTML = `
+                    <span class="mr-3 text-base">${country.flag}</span>
+                    <span class="font-medium mr-3 w-12 text-left">${country.code}</span>
+                    <span class="text-gray-600 truncate">${country.country}</span>
+                `;
+                button.onclick = () => selectCountry(country);
+                countryList.appendChild(button);
+            });
+        }
+
+        function toggleCountryDropdown() {
+            showCountryDropdown = !showCountryDropdown;
+            const dropdown = document.getElementById('country-dropdown');
+            dropdown.classList.toggle('hidden', !showCountryDropdown);
+        }
+
+        function selectCountry(country) {
+            selectedCountryCode = country.code;
+            document.getElementById('selected-flag').textContent = country.flag;
+            document.getElementById('selected-code').textContent = country.code;
+            showCountryDropdown = false;
+            document.getElementById('country-dropdown').classList.add('hidden');
+        }
+
+        // Visitor form handling
+        function handleVisitorForm(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('visitor-name').value;
+            const email = document.getElementById('visitor-email').value;
+            const phone = document.getElementById('visitor-phone').value;
+            
+            if (!name || !email) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Simulate visitor registration
+            visitorId = 'visitor_' + Date.now();
+            isRegistered = true;
+            localStorage.setItem('envirocareVisitorId', visitorId);
+            localStorage.setItem('envirocareVisitorName', name);
+            localStorage.setItem('envirocareVisitorEmail', email);
+            localStorage.setItem('envirocareVisitorPhone', phone);
+            
+            showChatArea();
+            
+            const greeting = `Hello ${name}! 👋 Welcome to *Envirocare Labs*! I'm Eva, your Virtual Assistant. Would you like to explore our services or have a specific question?`;
+            addBotMessage(greeting);
+            setQuickReplies(['Yes', 'No', 'Ask a question']);
+        }
+
+        // Chat functions
+        function addMessage(message, isVisitor) {
+            const messageId = 'msg_' + Date.now();
+            const messageObj = {
+                id: messageId,
+                message: message,
+                is_visitor: isVisitor,
+                timestamp: new Date().toISOString()
+            };
+            
+            messages.push(messageObj);
+            displayMessages();
+        }
+
+        function addBotMessage(message) {
+            addMessage(message, false);
+        }
+
+        function addUserMessage(message) {
+            addMessage(message, true);
+        }
+
+        function displayMessages() {
+            const container = document.getElementById('messages-container');
+            container.innerHTML = '';
+            
+            messages.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `flex ${msg.is_visitor ? 'justify-end' : 'justify-start'}`;
+                
+                messageDiv.innerHTML = `
+                    <div class="max-w-xs px-4 py-3 rounded-2xl ${
+                        msg.is_visitor
+                            ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg'
+                            : 'bg-white text-gray-800 shadow-md border border-gray-100'
+                    }">
+                        <p class="text-sm whitespace-pre-line leading-relaxed">${msg.message}</p>
+                        <p class="text-xs mt-2 ${msg.is_visitor ? 'text-blue-100' : 'text-gray-700'}">
+                            ${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                    </div>
+                `;
+                
+                container.appendChild(messageDiv);
+            });
+            
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function setQuickReplies(replies) {
+            quickReplies = replies;
+            const container = document.getElementById('quick-replies');
+            const grid = document.getElementById('quick-replies-grid');
+            
+            if (replies.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            container.classList.remove('hidden');
+            grid.innerHTML = '';
+            
+            replies.forEach((reply, index) => {
+                const button = document.createElement('button');
+                button.className = `px-4 py-3 rounded-xl border-2 transition-all duration-200 shadow-sm text-sm font-medium text-center ${
+                    ['Previous', 'Next', 'Back'].includes(reply) 
+                        ? 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 hover:border-gray-400' 
+                        : 'bg-white text-primary border-primary hover:bg-primary hover:text-white hover:shadow-md'
+                }`;
+                button.textContent = reply;
+                button.onclick = () => handleQuickReply(reply);
+                grid.appendChild(button);
+            });
+        }
+
+        function handleQuickReply(choice) {
+            if (isLoading) return;
+            
+            addUserMessage(choice);
+            setQuickReplies([]);
+            
+            // Simulate bot response
+            setTimeout(() => {
+                let botResponse = '';
+                
+                switch (conversationStep) {
+                    case 'ask_explore':
+                        if (choice.toLowerCase() === 'yes') {
+                            botResponse = 'Envirocare Labs offers a wide range of services! Which one are you interested in?';
+                            conversationStep = 'select_main_service';
+                            setQuickReplies([...MAIN_SERVICES, 'Back']);
+                        } else if (choice === 'Ask a question') {
+                            botResponse = 'Go ahead and ask me anything! 😊';
+                            conversationStep = 'free_text';
+                        } else {
+                            botResponse = 'No problem! Is there something specific I can help you with?';
+                            conversationStep = 'free_text';
+                        }
+                        break;
+                        
+                    case 'select_main_service':
+                        if (choice === 'Water Testing') {
+                            botResponse = 'Awesome! 💧 Water Testing is one of our specialties. What type of water testing are you interested in?';
+                            conversationStep = 'select_water_type';
+                            setQuickReplies([...WATER_TYPES, 'Back']);
+                        } else if (choice === 'Environmental Testing') {
+                            botResponse = 'Great choice! 🌱 Environmental Testing is key to sustainability. What specific environmental service do you need?';
+                            conversationStep = 'select_environmental_type';
+                            setQuickReplies([...ENV_TYPES, 'Back']);
+                        } else if (choice === 'Food Testing') {
+                            botResponse = 'Perfect! 🥫 Food Testing ensures safety and quality. Please select a food category:';
+                            conversationStep = 'select_food_category';
+                            setQuickReplies([...FOOD_CATEGORIES.slice(0, 6), 'Next', 'Back']);
+                        } else {
+                            botResponse = 'Could you specify what kind of service you\'re looking for? I\'m here to help! 🤔';
+                            conversationStep = 'free_text';
+                        }
+                        break;
+                        
+                    case 'select_water_type':
+                    case 'select_environmental_type':
+                    case 'select_food_category':
+                        botResponse = `Got it! You selected ${choice}. Would you like to share more details about your needs?`;
+                        conversationStep = 'ask_elaborate';
+                        setQuickReplies(['Yes', 'No', 'Back']);
+                        break;
+                        
+                    case 'ask_elaborate':
+                        if (choice.toLowerCase() === 'yes') {
+                            botResponse = 'Great! Please share more details, and I\'ll assist you further. 😊';
+                            conversationStep = 'free_text';
+                        } else {
+                            botResponse = 'Perfect! I\'ve created an enquiry for you. Our team will reach out soon to assist you. Have a great day! 😇';
+                            conversationStep = 'end_confirm';
+                            setQuickReplies(['Continue chat', 'End chat']);
+                        }
+                        break;
+                        
+                    case 'end_confirm':
+                        if (choice === 'Continue chat') {
+                            botResponse = 'Awesome, let\'s keep going! What\'s on your mind?';
+                            conversationStep = 'free_text';
+                        } else {
+                            botResponse = 'Thanks for chatting with Envirocare Labs! Feel free to reach out anytime. 😊';
+                            conversationStep = 'free_text';
+                            setQuickReplies([]);
+                        }
+                        break;
+                        
+                    default:
+                        botResponse = 'I\'d be happy to help you with our services, contact information, or any other questions you might have! 😊';
+                        setQuickReplies(['Explore services', 'Ask another question']);
+                        conversationStep = 'ask_explore';
+                }
+                
+                addBotMessage(botResponse);
+            }, 1000);
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if (!message || isLoading) return;
+            
+            addUserMessage(message);
+            input.value = '';
+            
+            // Simulate bot response
+            setTimeout(() => {
+                let botResponse = '';
+                const lowerMessage = message.toLowerCase();
+                
+                if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                    botResponse = `Hi there! I'm Eva from Envirocare Labs. What's on your mind today? 😊`;
+                } else if (lowerMessage.includes('help') || lowerMessage.includes('assist')) {
+                    botResponse = `I'm here to help with:\n• Exploring our services (Water, Food, Environmental Testing, etc.)\n• Answering questions about our lab\n• Scheduling assessments\n• Contact info\nWhat would you like to dive into?`;
+                } else if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('phone')) {
+                    botResponse = `You can reach us at:\n📧 info@envirocarelabs.com\n📞 +1-555-0123\nWe're open Monday-Friday, 9AM-6PM EST. Want to explore our services too?`;
+                    setQuickReplies(['Yes', 'No', 'Ask another question']);
+                    conversationStep = 'ask_explore';
+                } else if (lowerMessage.includes('hours') || lowerMessage.includes('time') || lowerMessage.includes('open')) {
+                    botResponse = `Our hours are:\n🕘 Monday-Friday: 9AM-6PM EST\n🕘 Saturday: 10AM-4PM EST\n🕘 Sunday: Closed\nWe also offer 24/7 emergency support for urgent environmental issues. Anything else I can assist with?`;
+                    setQuickReplies(['Continue chat', 'End chat']);
+                    conversationStep = 'end_confirm';
+                } else if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('pricing')) {
+                    botResponse = `Pricing depends on your needs:\n• Basic Assessment: $299\n• Comprehensive Analysis: $599\n• Custom Solutions: Contact us for a quote\nWould you like to discuss a specific service?`;
+                    setQuickReplies(['Yes', 'No', 'Ask another question']);
+                    conversationStep = 'ask_explore';
+                } else {
+                    botResponse = `I'd be happy to help you with our services, contact information, or any other questions you might have! 😊`;
+                    setQuickReplies(['Explore services', 'Ask another question']);
+                    conversationStep = 'ask_explore';
+                }
+                
+                addBotMessage(botResponse);
+            }, 1000);
+        }
+
+        function resetChat() {
+            localStorage.removeItem('envirocareVisitorId');
+            localStorage.removeItem('envirocareVisitorName');
+            localStorage.removeItem('envirocareVisitorEmail');
+            localStorage.removeItem('envirocareVisitorPhone');
+            
+            visitorId = null;
+            isRegistered = false;
+            messages = [];
+            conversationStep = 'ask_explore';
+            setQuickReplies([]);
+            
+            showHome();
+        }
+
+        // FAQ functions
+        function filterFAQs() {
+            const query = document.getElementById('faq-search').value.toLowerCase();
+            const filtered = faqData.filter(faq => 
+                faq.question.toLowerCase().includes(query) ||
+                faq.answer.toLowerCase().includes(query) ||
+                faq.category.toLowerCase().includes(query) ||
+                faq.tags.some(tag => tag.toLowerCase().includes(query))
+            );
+            displayFAQs(filtered);
+        }
+
+        function displayFAQs(faqs) {
+            const container = document.getElementById('faq-results');
+            container.innerHTML = '';
+            
+            if (faqs.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
+                            </svg>
+                        </div>
+                        <p class="text-gray-700 text-sm">No FAQs found</p>
+                        <p class="text-gray-600 text-xs mt-1">Try different keywords or browse all FAQs</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            faqs.forEach(faq => {
+                const faqDiv = document.createElement('div');
+                faqDiv.className = 'bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200';
+                faqDiv.innerHTML = `
+                    <div class="p-4 cursor-pointer group" onclick="toggleFAQ(${faq.id})">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h4 class="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors duration-200">
+                                    ${faq.question}
+                                </h4>
+                                <div class="flex items-center space-x-2 mt-1">
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-primary">
+                                        ${faq.category}
+                                    </span>
+                                    <span class="text-xs text-gray-700">${faq.tags.slice(0, 2).join(', ')}</span>
+                                </div>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors duration-200 transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="faq-answer-${faq.id}" class="hidden px-4 pb-4">
+                        <div class="pt-2 border-t border-gray-100">
+                            <p class="text-sm text-gray-700 leading-relaxed">${faq.answer}</p>
+                            <div class="flex flex-wrap gap-1 mt-3">
+                                ${faq.tags.map(tag => `<span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">#${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(faqDiv);
+            });
+        }
+
+        function toggleFAQ(faqId) {
+            const element = document.getElementById(`faq-answer-${faqId}`);
+            if (element) {
+                element.classList.toggle('hidden');
+            }
+        }
+
+        // Toggle chatbot visibility
+        function toggleChatbot() {
+            const container = document.getElementById('chatbot-container');
+            container.style.display = container.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initChatbot);
+    </script>
+</body>
+</html>
