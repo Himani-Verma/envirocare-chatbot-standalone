@@ -1120,7 +1120,7 @@
                     case 'ask_elaborate':
                         if (choice.toLowerCase() === 'yes') {
                             botResponse = 'Great! Please share more details, and I\'ll assist you further. 😊';
-                            conversationStep = 'free_text';
+                            conversationStep = 'collect_details';
                         } else {
                             botResponse = 'Perfect! I\'ve created an enquiry for you. Our team will reach out soon to assist you. Have a great day! 😇';
                             conversationStep = 'end_confirm';
@@ -1128,10 +1128,17 @@
                         }
                         break;
                         
+                    case 'collect_details':
+                        botResponse = 'Thank you for sharing those details! I\'ve noted everything down. Our Envirocare team will connect with you soon to discuss your requirements further. You can expect to hear from us within 24 hours. 😊';
+                        conversationStep = 'end_confirm';
+                        setQuickReplies(['Continue chat', 'End chat']);
+                        break;
+                        
                     case 'end_confirm':
                         if (choice === 'Continue chat') {
-                            botResponse = 'Awesome, let\'s keep going! What\'s on your mind?';
-                            conversationStep = 'free_text';
+                            botResponse = 'Great! Would you like to explore our services or have a specific question?';
+                            conversationStep = 'ask_explore';
+                            setQuickReplies(['Yes', 'Ask a question', 'No']);
                         } else {
                             botResponse = 'Thanks for chatting with Envirocare Labs! Feel free to reach out anytime. 😊';
                             conversationStep = 'free_text';
@@ -1167,7 +1174,12 @@
                 let botResponse = '';
                 const lowerMessage = message.toLowerCase();
                 
-                if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                // Handle specific conversation steps
+                if (conversationStep === 'collect_details') {
+                    botResponse = 'Thank you for sharing those details! I\'ve noted everything down. Our Envirocare team will connect with you soon to discuss your requirements further. You can expect to hear from us within 24 hours. 😊';
+                    conversationStep = 'end_confirm';
+                    setQuickReplies(['Continue chat', 'End chat']);
+                } else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
                     botResponse = `Hi there! I'm Eva from Envirocare Labs. What's on your mind today? 😊`;
                 } else if (lowerMessage.includes('help') || lowerMessage.includes('assist')) {
                     botResponse = `I'm here to help with:\n• Exploring our services (Water, Food, Environmental Testing, etc.)\n• Answering questions about our lab\n• Scheduling assessments\n• Contact info\nWhat would you like to dive into?`;
