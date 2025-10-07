@@ -36,6 +36,12 @@
             font-family: 'Inter', 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--ec-bg);
             color: var(--ec-ink);
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+        
+        .envirocare-chat * {
+            box-sizing: border-box;
         }
         
         /* Background Pattern */
@@ -105,7 +111,7 @@
         
         /* Header Styling */
         .envirocare-chat .chat-header {
-            height: 60px;
+            height: 50px;
             background: linear-gradient(135deg, var(--ec-blue), var(--ec-blue-700));
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: var(--shadow-soft);
@@ -457,18 +463,22 @@
     <!-- Chatbot Container - NO FLOATING WIDGET -->
     <div id="chatbot-container" class="envirocare-chat w-full h-full max-w-full bg-white overflow-hidden flex flex-col backdrop-blur-sm bg-white/95" style="max-width: 100vw; max-height: 100vh;">
         <!-- Header -->
-        <div class="chat-header flex items-center justify-between px-6">
-            <div class="flex items-center space-x-3">
-                <img src="./images/envirocare-logo.png" alt="Envirocare Labs" class="logo h-10 w-auto">
-            </div>
+        <div class="chat-header flex items-center justify-between px-3 py-2">
             <div class="flex items-center space-x-2">
-                <button class="text-white/80 hover:text-white transition-colors duration-200 p-2 rounded-lg hover:bg-white/10 focus-visible">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <img src="./images/envirocare-logo.png" alt="Envirocare Labs" class="logo h-8 w-auto">
+                <div>
+                    <h1 class="title text-sm">Envirocare Labs</h1>
+                    <p class="small-text text-white/80 text-xs">Analysis and Beyond...</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-1">
+                <button class="text-white/80 hover:text-white transition-colors duration-200 p-1.5 rounded-lg hover:bg-white/10 focus-visible">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
-                <button onclick="resetChat()" class="text-white/80 hover:text-white transition-colors duration-200 p-2 rounded-lg hover:bg-white/10 focus-visible">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <button onclick="resetChat()" class="text-white/80 hover:text-white transition-colors duration-200 p-1.5 rounded-lg hover:bg-white/10 focus-visible">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                 </button>
@@ -476,9 +486,9 @@
         </div>
 
         <!-- Content Area -->
-        <div id="content-area" class="flex-1 p-4 bg-gradient-to-b from-gray-50 to-white overflow-y-auto custom-scrollbar" style="scroll-behavior: smooth;">
+        <div id="content-area" class="flex-1 p-2 bg-gradient-to-b from-gray-50 to-white overflow-y-auto custom-scrollbar" style="scroll-behavior: smooth;">
             <!-- Home Screen -->
-            <div id="home-screen" class="text-center space-y-8 py-8">
+            <div id="home-screen" class="text-center space-y-4 py-4">
                 <!-- Hero Section with Avatar -->
                 <div class="space-y-4">
                     <div class="flex justify-center">
@@ -633,19 +643,19 @@
         </div>
 
         <!-- Chat Input -->
-        <div id="chat-input" class="p-4 border-t border-gray-100 bg-white/90 backdrop-blur-sm hidden">
-            <div class="flex items-center space-x-3">
+        <div id="chat-input" class="p-2 border-t border-gray-100 bg-white/90 backdrop-blur-sm hidden">
+            <div class="flex items-center space-x-2">
                 <!-- Emoji button -->
-                <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors focus-visible">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <button class="p-1.5 text-gray-400 hover:text-gray-600 transition-colors focus-visible">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </button>
                 <input type="text" id="message-input" placeholder="Type your message here..." 
-                    class="flex-1 px-4 py-3 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90 backdrop-blur-sm text-black body-text focus-visible" />
+                    class="flex-1 px-3 py-2 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white/90 backdrop-blur-sm text-black body-text focus-visible" />
                 <button onclick="sendMessage()" id="send-btn" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-full transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible flex items-center justify-center shadow-lg hover:shadow-xl">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
                 </button>
@@ -653,25 +663,25 @@
         </div>
 
         <!-- Bottom Navigation -->
-        <div class="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-3">
+        <div class="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-2">
             <div class="flex justify-around">
-                <button onclick="showHome()" class="nav-btn flex flex-col items-center space-y-1 p-2 rounded-lg transition-all duration-200 text-primary bg-blue-50 focus-visible">
+                <button onclick="showHome()" class="nav-btn flex flex-col items-center space-y-0.5 p-1.5 rounded-lg transition-all duration-200 text-primary bg-blue-50 focus-visible">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <span class="small-text font-medium">Home</span>
+                    <span class="small-text font-medium text-xs">Home</span>
                 </button>
-                <button onclick="startChat()" class="nav-btn flex flex-col items-center space-y-1 p-2 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
+                <button onclick="startChat()" class="nav-btn flex flex-col items-center space-y-0.5 p-1.5 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
-                    <span class="small-text font-medium">Chat</span>
+                    <span class="small-text font-medium text-xs">Chat</span>
                 </button>
-                <button onclick="showFAQ()" class="nav-btn flex flex-col items-center space-y-1 p-2 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
+                <button onclick="showFAQ()" class="nav-btn flex flex-col items-center space-y-0.5 p-1.5 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span class="small-text font-medium">FAQ</span>
+                    <span class="small-text font-medium text-xs">FAQ</span>
                 </button>
             </div>
         </div>
