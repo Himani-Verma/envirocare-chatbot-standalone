@@ -578,14 +578,14 @@
             </div>
 
             <!-- Chat Area -->
-            <div id="chat-area" class="space-y-4 py-4 hidden">
+            <div id="chat-area" class="space-y-2 py-2 hidden">
                 <div class="flex justify-end">
                     <button onclick="resetChat()" 
                         class="small-text text-primary hover:text-primary-dark hover:underline transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-blue-50 focus-visible">
                         Start New Chat
                     </button>
                 </div>
-                <div id="messages-container" class="space-y-3 min-h-[300px] overflow-y-auto custom-scrollbar"></div>
+                <div id="messages-container" class="space-y-2 min-h-[300px] overflow-y-auto custom-scrollbar"></div>
                 
                 <!-- Typing Indicator -->
                 <div id="typing-indicator" class="flex justify-start hidden">
@@ -606,8 +606,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="quick-replies" class="flex justify-start mt-4 hidden">
-                    <div class="grid grid-cols-2 gap-2 w-full" id="quick-replies-grid"></div>
+                <div id="quick-replies" class="flex justify-start mt-2 hidden">
+                    <div class="grid grid-cols-2 gap-1.5 w-full" id="quick-replies-grid"></div>
                 </div>
             </div>
 
@@ -663,22 +663,22 @@
         </div>
 
         <!-- Bottom Navigation -->
-        <div class="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-2">
+        <div class="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-1.5">
             <div class="flex justify-around">
-                <button onclick="showHome()" class="nav-btn flex flex-col items-center space-y-0.5 p-1.5 rounded-lg transition-all duration-200 text-primary bg-blue-50 focus-visible">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <button onclick="showHome()" class="nav-btn flex flex-col items-center space-y-0 p-1 rounded-lg transition-all duration-200 text-primary bg-blue-50 focus-visible">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                     <span class="small-text font-medium text-xs">Home</span>
                 </button>
-                <button onclick="startChat()" class="nav-btn flex flex-col items-center space-y-0.5 p-1.5 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <button onclick="startChat()" class="nav-btn flex flex-col items-center space-y-0 p-1 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                     <span class="small-text font-medium text-xs">Chat</span>
                 </button>
-                <button onclick="showFAQ()" class="nav-btn flex flex-col items-center space-y-0.5 p-1.5 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <button onclick="showFAQ()" class="nav-btn flex flex-col items-center space-y-0 p-1 rounded-lg transition-all duration-200 text-gray-700 hover:text-gray-900 hover:bg-gray-50 focus-visible">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span class="small-text font-medium text-xs">FAQ</span>
